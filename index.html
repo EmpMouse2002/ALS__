@@ -241,7 +241,6 @@
     ];
 
     let selectedItems = [];
-    let highlightedButtons = [];
     let discountApplied = false;
 
     document.querySelectorAll('.item-button').forEach(button => {
@@ -257,23 +256,17 @@
             }
 
             button.classList.toggle('selected');
-            if (highlightedButtons.includes(button)) {
-                highlightedButtons = highlightedButtons.filter(b => b !== button);
-            } else {
-                highlightedButtons.push(button);
-            }
             updateTotal();
         });
     });
 
     document.getElementById('clearBtn').addEventListener('click', () => {
         selectedItems = [];
-        highlightedButtons.forEach(button => button.classList.remove('selected'));
-        highlightedButtons = [];
+        discountApplied = false;
+        document.querySelectorAll('.item-button').forEach(button => button.classList.remove('selected'));
         document.getElementById('customerName').value = '';
         document.getElementById('vehicle').value = '';
         document.getElementById('license').value = '';
-        discountApplied = false;
         updateTotal();
     });
 
@@ -308,14 +301,18 @@
             total = total * 0.9; // Apply 10% discount
         }
 
+        // Format the total amount to $3,000 format
+        const formattedTotal = total.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
         const orderSummary = `
-\`\`\`
-Customer Name: ${customerName}
-Vehicle | Make/Model: ${vehicle}
-Plate: ${license}
-Upgrades Purchased: ${orderDetails}
-Total: $${total.toFixed(2)}
-\`\`\`
+Customer: ${customerName}
+Vehicle: ${vehicle}
+License: ${license}
+
+Items:
+${orderDetails}
+
+Total: ${formattedTotal}
         `;
 
         navigator.clipboard.writeText(orderSummary).then(() => {
@@ -336,11 +333,12 @@ Total: $${total.toFixed(2)}
             total = total * 0.9; // Apply 10% discount if active
         }
 
-        document.getElementById('total').innerText = `Total: $${total.toFixed(2)}`;
+        document.getElementById('total').innerText = `Total: ${total.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`;
         document.getElementById('orderDetails').innerText = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
     }
 </script>
 
 </body>
 </html>
+
 
