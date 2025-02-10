@@ -295,13 +295,7 @@
             const lastItem = selectedItems.pop();  // Remove the last item added
             const button = document.querySelector(`[data-name="${lastItem.name}"]`);
             if (button) button.classList.remove('selected');
-        } else if (lastAction === 'deselect') {
-            const lastItem = selectedItems[selectedItems.length - 1];  // Select the last deselected item
-            selectedItems.push({ name: lastItem.name, price: lastItem.price, quantity: 1 });
-            const button = document.querySelector(`[data-name="${lastItem.name}"]`);
-            if (button) button.classList.add('selected');
         }
-
         updateTotal();
     });
 
@@ -362,4 +356,3 @@ SHOP: Al's Garage
 
 </body>
 </html>
-
