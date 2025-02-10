@@ -263,15 +263,12 @@
     document.getElementById('clearBtn').addEventListener('click', () => {
         selectedItems = [];
         discountApplied = false;
-        document.querySelectorAll('.item-button').forEach(button => button.classList.remove('selected'));
-        document.getElementById('customerName').value = '';
-        document.getElementById('vehicle').value = '';
-        document.getElementById('license').value = '';
         updateTotal();
+        resetForm();
     });
 
     document.getElementById('discountBtn').addEventListener('click', () => {
-        discountApplied = true;
+        discountApplied = !discountApplied;
         updateTotal();
     });
 
@@ -279,7 +276,8 @@
         const customerName = document.getElementById('customerName').value;
         const vehicle = document.getElementById('vehicle').value;
         const license = document.getElementById('license').value;
-        const orderDetails = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
+
+        let orderDetails = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
 
         let total = selectedItems.reduce((sum, item) => {
             if (noDiscountItems.includes(item.name)) {
@@ -290,7 +288,7 @@
         }, 0);
 
         if (discountApplied) {
-            total = total * 0.9; // Apply discount
+            total = total * 0.9;
         }
 
         const formattedTotal = `$${Math.round(total).toLocaleString()}`;
@@ -319,14 +317,18 @@ SHOP: Al's Garage
         }, 0);
 
         if (discountApplied) {
-            total = total * 0.9; // Apply 10% discount if active
+            total = total * 0.9;
         }
 
-        document.getElementById('total').innerText = `Total: $${Math.round(total).toLocaleString('en-US')}`;
+        document.getElementById('total').innerText = `Total: $${Math.round(total).toLocaleString()}`;
         document.getElementById('orderDetails').innerText = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
     }
-</script>
 
+    function resetForm() {
+        document.getElementById('customerName').value = '';
+        document.getElementById('vehicle').value = '';
+        document.getElementById('license').value = '';
+    }
+</script>
 </body>
 </html>
-
