@@ -148,34 +148,34 @@
         <button class="item-button" data-name="Full Service" data-price="18650">Full Service</button>
         <button class="item-button" data-name="14 Engine" data-price="30000">14 Engine</button>
         <button class="item-button" data-name="V6 Engine" data-price="45000">V6 Engine</button>
-        <button class="item-button" data-name="V8 Engine" data-price="65000">V8 Engine</button>
+        <button class="item-button" data-name="V8 Engine" data-price="100000">V8 Engine</button>
     </div>
     <div class="column">
-        <button class="item-button" data-name="V12 Engine" data-price="100000">V12 Engine</button>
+        <button class="item-button" data-name="V12 Engine" data-price="500000">V12 Engine</button>
         <button class="item-button" data-name="Turbo" data-price="35000">Turbo</button>
-        <button class="item-button" data-name="EV Motor" data-price="3340">EV Motor</button>
+        <button class="item-button" data-name="EV Motor" data-price="3300">EV Motor</button>
         <button class="item-button" data-name="EV Coolant" data-price="5220">EV Coolant</button>
     </div>
     <div class="column">
-        <button class="item-button" data-name="AWD" data-price="25000">AWD</button>
-        <button class="item-button" data-name="RWD" data-price="25000">RWD</button>
-        <button class="item-button" data-name="FWD" data-price="25000">FWD</button>
+        <button class="item-button" data-name="AWD" data-price="50000">AWD</button>
+        <button class="item-button" data-name="RWD" data-price="50000">RWD</button>
+        <button class="item-button" data-name="FWD" data-price="50000">FWD</button>
         <button class="item-button" data-name="Slick Tyres" data-price="11340">Slick Tyres</button>
     </div>
     <div class="column">
         <button class="item-button" data-name="Semi Slick Tyres" data-price="11200">Semi Slick Tyres</button>
         <button class="item-button" data-name="Offroad Tyres" data-price="11200">Offroad Tyres</button>
-        <button class="item-button" data-name="Drift Kit" data-price="102380">Drift Kit</button>
+        <button class="item-button" data-name="Drift Kit" data-price="100000">Drift Kit</button>
         <button class="item-button" data-name="Lighting Controller" data-price="5000">Lighting Controller</button>
     </div>
     <div class="column">
         <button class="item-button" data-name="Stance Kit" data-price="10000">Stance Kit</button>
         <button class="item-button" data-name="Engine Oil" data-price="850">Engine Oil</button>
         <button class="item-button" data-name="Vehicle Wheels" data-price="12000">Vehicle Wheels</button>
-        <button class="item-button" data-name="Tyre Smoke" data-price="2750">Tyre Smoke</button>
+        <button class="item-button" data-name="Tyre Smoke" data-price="4000">Tyre Smoke</button>
     </div>
     <div class="column">
-        <button class="item-button" data-name="Extra" data-price="1500">Extra</button>
+        <button class="item-button" data-name="Extra" data-price="3000">Extra</button>
         <button class="item-button" data-name="Cleaning" data-price="500">Cleaning</button>
         <button class="item-button" data-name="Performance Part" data-price="20000">Performance Part</button>
         <button class="item-button" data-name="Ceramic Break" data-price="25000">Ceramic Break</button>
@@ -210,28 +210,34 @@
         { name: 'Full Service', price: 18650 },
         { name: '14 Engine', price: 30000 },
         { name: 'V6 Engine', price: 45000 },
-        { name: 'V8 Engine', price: 65000 },
-        { name: 'V12 Engine', price: 100000 },
+        { name: 'V8 Engine', price: 100000 },
+        { name: 'V12 Engine', price: 500000 },
         { name: 'Turbo', price: 35000 },
-        { name: 'EV Motor', price: 3340 },
+        { name: 'EV Motor', price: 3300 },
         { name: 'EV Coolant', price: 5220 },
-        { name: 'AWD', price: 25000 },
-        { name: 'RWD', price: 25000 },
-        { name: 'FWD', price: 25000 },
+        { name: 'AWD', price: 50000 },
+        { name: 'RWD', price: 50000 },
+        { name: 'FWD', price: 50000 },
         { name: 'Slick Tyres', price: 11340 },
         { name: 'Semi Slick Tyres', price: 11200 },
         { name: 'Offroad Tyres', price: 11200 },
-        { name: 'Drift Kit', price: 102380 },
+        { name: 'Drift Kit', price: 100000 },
         { name: 'Lighting Controller', price: 5000 },
         { name: 'Stance Kit', price: 10000 },
         { name: 'Engine Oil', price: 850 },
         { name: 'Vehicle Wheels', price: 12000 },
-        { name: 'Tyre Smoke', price: 2750 },
-        { name: 'Extra', price: 1500 },
+        { name: 'Tyre Smoke', price: 4000 },
+        { name: 'Extra', price: 3000 },
         { name: 'Cleaning', price: 500 },
         { name: 'Performance Part', price: 20000 },
         { name: 'Ceramic Break', price: 25000 },
-        { name: 'Cosmetic Part', price: 4500 }  // Added Cosmetic Part
+        { name: 'Cosmetic Part', price: 4500 }
+    ];
+
+    const noDiscountItems = [
+        '14 Engine', 'V6 Engine', 'V8 Engine', 'V12 Engine', 'Turbo',
+        'AWD', 'RWD', 'FWD', 'Slick Tyres', 'Semi Slick Tyres',
+        'Offroad Tyres', 'Drift Kit', 'Ceramic Break'
     ];
 
     let selectedItems = [];
@@ -242,7 +248,7 @@
             const itemName = button.dataset.name;
             const itemPrice = parseInt(button.dataset.price);
             const existingItemIndex = selectedItems.findIndex(item => item.name === itemName);
-            
+
             if (existingItemIndex > -1) {
                 selectedItems[existingItemIndex].quantity += 1;
             } else {
@@ -281,9 +287,14 @@
     });
 
     document.getElementById('discountBtn').addEventListener('click', () => {
-        const total = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const discountedTotal = total * 0.9; // Applying 10% discount
-        updateTotal(discountedTotal);
+        let total = selectedItems.reduce((sum, item) => {
+            if (noDiscountItems.includes(item.name)) {
+                return sum + (item.price * item.quantity);
+            } else {
+                return sum + ((item.price * item.quantity) * 0.9);
+            }
+        }, 0);
+        updateTotal(total);
     });
 
     document.getElementById('copyBtn').addEventListener('click', () => {
@@ -293,7 +304,14 @@
 
         const orderDetails = selectedItems.map(item => `${item.name} x${item.quantity}`).join(', ');
 
-        const total = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const total = selectedItems.reduce((sum, item) => {
+            if (noDiscountItems.includes(item.name)) {
+                return sum + (item.price * item.quantity);
+            } else {
+                return sum + ((item.price * item.quantity) * 0.9);
+            }
+        }, 0);
+
         const orderSummary = `
 \`\`\`
 Customer Name: ${customerName}
@@ -312,7 +330,13 @@ SHOP: Al's Garage
 
     function updateTotal(total = null) {
         if (!total) {
-            total = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            total = selectedItems.reduce((sum, item) => {
+                if (noDiscountItems.includes(item.name)) {
+                    return sum + (item.price * item.quantity);
+                } else {
+                    return sum + ((item.price * item.quantity) * 0.9);
+                }
+            }, 0);
         }
         document.getElementById('total').innerText = `Total: $${total}`;
         document.getElementById('orderDetails').innerText = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
@@ -321,4 +345,3 @@ SHOP: Al's Garage
 
 </body>
 </html>
-
