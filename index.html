@@ -270,27 +270,15 @@
         updateTotal();
     });
 
-    document.getElementById('undoBtn').addEventListener('click', () => {
-        if (selectedItems.length > 0) {
-            const lastItem = selectedItems.pop();
-            const lastButton = [...document.querySelectorAll('.item-button')].find(button => button.dataset.name === lastItem.name);
-            if (lastButton) {
-                lastButton.classList.remove('selected');
-            }
-            updateTotal();
-        }
-    });
-
     document.getElementById('discountBtn').addEventListener('click', () => {
-        discountApplied = !discountApplied;
+        discountApplied = true;
         updateTotal();
     });
 
     document.getElementById('copyBtn').addEventListener('click', () => {
-        const customerName = document.getElementById('customerName').value || 'N/A';
-        const vehicle = document.getElementById('vehicle').value || 'N/A';
-        const license = document.getElementById('license').value || 'N/A';
-
+        const customerName = document.getElementById('customerName').value;
+        const vehicle = document.getElementById('vehicle').value;
+        const license = document.getElementById('license').value;
         const orderDetails = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
 
         let total = selectedItems.reduce((sum, item) => {
