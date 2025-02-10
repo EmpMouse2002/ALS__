@@ -281,9 +281,9 @@
 
         let total = selectedItems.reduce((sum, item) => {
             if (noDiscountItems.includes(item.name)) {
-                return sum + (item.price * item.quantity);
+                return sum + (item.price * item.quantity); // No discount for these items
             } else {
-                return sum + (item.price * item.quantity);
+                return sum + (item.price * item.quantity); // Apply discount if needed
             }
         }, 0);
 
