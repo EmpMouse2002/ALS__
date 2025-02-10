@@ -298,22 +298,19 @@
         }, 0);
 
         if (discountApplied) {
-            total = total * 0.9; // Apply 10% discount
+            total = total * 0.9; // Apply discount
         }
 
-        // Remove decimals and format the total amount to $3,000 format
-        const formattedTotal = `$${Math.round(total).toLocaleString('en-US')}`;
+        const formattedTotal = `$${Math.round(total).toLocaleString()}`;
 
-        const orderSummary = `
-\`\`\`
+        const orderSummary = `\`\`\`
 Customer Name: ${customerName}
 Vehicle | Make/Model: ${vehicle}
 Plate: ${license}
 Upgrades Purchased: ${orderDetails}
 Price Charged: ${formattedTotal}
 SHOP: Al's Garage
-\`\`\`
-        `;
+\`\`\``;
 
         navigator.clipboard.writeText(orderSummary).then(() => {
             alert('Order copied to clipboard!');
@@ -333,7 +330,6 @@ SHOP: Al's Garage
             total = total * 0.9; // Apply 10% discount if active
         }
 
-        // Remove decimals and format the total amount to $3,000 format
         document.getElementById('total').innerText = `Total: $${Math.round(total).toLocaleString('en-US')}`;
         document.getElementById('orderDetails').innerText = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
     }
