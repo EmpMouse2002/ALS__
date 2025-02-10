@@ -1,1 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al's Garage POS System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #ff4d4d;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            margin: 10px;
+            min-width: 250px;
+            max-width: 300px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #1f1f1f;
+        }
+
+        .item-button {
+            background-color: #ff4d4d;
+            color: cyan;
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .item-button:hover {
+            background-color: #e60000;
+        }
+
+        .item-button.selected {
+            background-color: cyan;
+            color: red;
+        }
+
+        .column input, .column button {
+            background-color: #1f1f1f;
+            color: cyan;
+            border: 2px solid #ff4d4d;
+            padding: 12px;
+            margin: 5px 0;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .column input:focus, .column button:hover {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        #total {
+            font-size: 20px;
+            font-weight: bold;
+            color: cyan;
+            margin: 20px 0;
+        }
+
+        #orderDetails {
+            font-size: 16px;
+            color: #ff4d4d;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            text-align: center;
+        }
+
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .actions button {
+            background-color: #ff4d4d;
+            color: cyan;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .actions button:hover {
+            background-color: #e60000;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Al's Garage POS</h1>
+
+<div class="container">
+    <!-- Customer Information Column -->
+    <div class="column">
+        <input type="text" id="customerName" placeholder="Customer Name" oninput="updateTotal()">
+        <input type="text" id="vehicle" placeholder="Vehicle | Make/Model" oninput="updateTotal()">
+        <input type="text" id="license" placeholder="Plate" oninput="updateTotal()">
+    </div>
+
+    <!-- Items Column -->
+    <div class="column">
+        <button class="item-button" data-name="Repair" data-price="4500">Repair</button>
+        <button class="item-button" data-name="Respray" data-price="3000">Respray</button>
+        <button class="item-button" data-name="Tire Replacement" data-price="1500">Tire Replacement</button>
+        <button class="item-button" data-name="Clutch Replacement" data-price="1600">Clutch Replacement</button>
+    </div>
+    <div class="column">
+        <button class="item-button" data-name="Air Filter" data-price="1000">Air Filter</button>
+        <button class="item-button" data-name="Spark Plug" data-price="400">Spark Plug</button>
+        <button class="item-button" data-name="Suspension Parts" data-price="1650">Suspension Parts</button>
+        <button class="item-button" data-name="Brakepad Replacement" data-price="250">Brakepad Replacement</button>
+    </div>
+    <div class="column">
+        <button class="item-button" data-name="Full Service" data-price="18650">Full Service</button>
+        <button class="item-button" data-name="14 Engine" data-price="30000">14 Engine</button>
+        <button class="item-button" data-name="V6 Engine" data-price="45000">V6 Engine</button>
+        <button class="item-button" data-name="V8 Engine" data-price="100000">V8 Engine</button>
+    </div>
+    <div class="column">
+        <button class="item-button" data-name="V12 Engine" data-price="500000">V12 Engine</button>
+        <button class="item-button" data-name="Turbo" data-price="35000">Turbo</button>
+        <button class="item-button" data-name="EV Motor" data-price="3300">EV Motor</button>
+        <button class="item-button" data-name="EV Coolant" data-price="5220">EV Coolant</button>
+    </div>
+    <div class="column">
+        <button class="item-button" data-name="AWD" data-price="50000">AWD</button>
+        <button class="item-button" data-name="RWD" data-price="50000">RWD</button>
+        <button class="item-button" data-name="FWD" data-price="50000">FWD</button>
+        <button class="item-button" data-name="Slick Tyres" data-price="11340">Slick Tyres</button>
+    </div>
+    <div class="column">
+        <button class="item-button" data-name="Semi Slick Tyres" data-price="11200">Semi Slick Tyres</button>
+        <button class="item-button" data-name="Offroad Tyres" data-price="11200">Offroad Tyres</button>
+        <button class="item-button" data-name="Drift Kit" data-price="100000">Drift Kit</button>
+        <button class="item-button" data-name="Lighting Controller" data-price="5000">Lighting Controller</button>
+    </div>
+    <div class="column">
+        <button class="item-button" data-name="Stance Kit" data-price="10000">Stance Kit</button>
+        <button class="item-button" data-name="Engine Oil" data-price="850">Engine Oil</button>
+        <button class="item-button" data-name="Vehicle Wheels" data-price="12000">Vehicle Wheels</button>
+        <button class="item-button" data-name="Tyre Smoke" data-price="4000">Tyre Smoke</button>
+    </div>
+    <div class="column">
+        <button class="item-button" data-name="Extra" data-price="3000">Extra</button>
+        <button class="item-button" data-name="Cleaning" data-price="500">Cleaning</button>
+        <button class="item-button" data-name="Performance Part" data-price="20000">Performance Part</button>
+        <button class="item-button" data-name="Ceramic Break" data-price="25000">Ceramic Break</button>
+    </div>
+    <div class="column">
+        <button class="item-button" data-name="Cosmetic Part" data-price="4500">Cosmetic Part</button>
+    </div>
+</div>
+
+<!-- Actions Buttons -->
+<div class="actions">
+    <button id="undoBtn">Undo</button>
+    <button id="clearBtn">Clear</button>
+    <button id="discountBtn">10% Discount</button>
+    <button id="copyBtn">Copy Order</button>
+</div>
+
+<!-- Total Price and Order Summary -->
+<p id="total">Total: $0</p>
+<pre id="orderDetails"></pre>
+
+<script>
+    const items = [
+        { name: 'Repair', price: 4500 },
+        { name: 'Respray', price: 3000 },
+        { name: 'Tire Replacement', price: 1500 },
+        { name: 'Clutch Replacement', price: 1600 },
+        { name: 'Air Filter', price: 1000 },
+        { name: 'Spark Plug', price: 400 },
+        { name: 'Suspension Parts', price: 1650 },
+        { name: 'Brakepad Replacement', price: 250 },
+        { name: 'Full Service', price: 18650 },
+        { name: '14 Engine', price: 30000 },
+        { name: 'V6 Engine', price: 45000 },
+        { name: 'V8 Engine', price: 100000 },
+        { name: 'V12 Engine', price: 500000 },
+        { name: 'Turbo', price: 35000 },
+        { name: 'EV Motor', price: 3300 },
+        { name: 'EV Coolant', price: 5220 },
+        { name: 'AWD', price: 50000 },
+        { name: 'RWD', price: 50000 },
+        { name: 'FWD', price: 50000 },
+        { name: 'Slick Tyres', price: 11340 },
+        { name: 'Semi Slick Tyres', price: 11200 },
+        { name: 'Offroad Tyres', price: 11200 },
+        { name: 'Drift Kit', price: 100000 },
+        { name: 'Lighting Controller', price: 5000 },
+        { name: 'Stance Kit', price: 10000 },
+        { name: 'Engine Oil', price: 850 },
+        { name: 'Vehicle Wheels', price: 12000 },
+        { name: 'Tyre Smoke', price: 4000 },
+        { name: 'Extra', price: 3000 },
+        { name: 'Cleaning', price: 500 },
+        { name: 'Performance Part', price: 20000 },
+        { name: 'Ceramic Break', price: 25000 },
+        { name: 'Cosmetic Part', price: 4500 }
+    ];
+
+    const noDiscountItems = [
+        '14 Engine', 'V6 Engine', 'V8 Engine', 'V12 Engine', 'Turbo',
+        'AWD', 'RWD', 'FWD', 'Slick Tyres', 'Semi Slick Tyres', 
+        'Offroad Tyres', 'Drift Kit', 'Ceramic Break'
+    ];
+
+    let selectedItems = [];
+    let discountApplied = false;
+    let lastAction = null;  // Track last action for undo
+
+    // Event listeners for item selection
+    document.querySelectorAll('.item-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const itemName = button.dataset.name;
+            const itemPrice = parseInt(button.dataset.price);
+
+            // Check if item is already selected
+            const itemIndex = selectedItems.findIndex(item => item.name === itemName);
+            if (itemIndex !== -1) {
+                // Deselect the item
+                selectedItems.splice(itemIndex, 1);
+                button.classList.remove('selected');
+                lastAction = 'deselect';  // Track deselection for undo
+            } else {
+                // Select the item
+                selectedItems.push({ name: itemName, price: itemPrice, quantity: 1 });
+                button.classList.add('selected');
+                lastAction = 'select';  // Track selection for undo
+            }
+
+            updateTotal();
+        });
+    });
+
+    // Apply 10% discount
+    document.getElementById('discountBtn').addEventListener('click', () => {
+        discountApplied = !discountApplied;
+        document.getElementById('discountBtn').textContent = discountApplied ? 'Remove Discount' : 'Apply 10% Discount';
+        updateTotal();
+    });
+
+    // Clear all selected items and reset discount
+    document.getElementById('clearBtn').addEventListener('click', () => {
+        selectedItems = [];
+        discountApplied = false;
+        lastAction = null;
+        document.getElementById('discountBtn').textContent = 'Apply 10% Discount';
+        updateTotal();
+
+        // Remove selection from all buttons
+        document.querySelectorAll('.item-button').forEach(button => {
+            button.classList.remove('selected');
+        });
+    });
+
+    // Undo last selection
+    document.getElementById('undoBtn').addEventListener('click', () => {
+        if (lastAction === 'select') {
+            const lastItem = selectedItems.pop();  // Remove the last item added
+            const button = document.querySelector(`[data-name="${lastItem.name}"]`);
+            if (button) button.classList.remove('selected');
+        } else if (lastAction === 'deselect') {
+            const lastItem = selectedItems[selectedItems.length - 1];  // Select the last deselected item
+            selectedItems.push({ name: lastItem.name, price: lastItem.price, quantity: 1 });
+            const button = document.querySelector(`[data-name="${lastItem.name}"]`);
+            if (button) button.classList.add('selected');
+        }
+
+        updateTotal();
+    });
+
+    // Copy order to clipboard
+    document.getElementById('copyBtn').addEventListener('click', () => {
+        const customerName = document.getElementById('customerName').value;
+        const vehicle = document.getElementById('vehicle').value;
+        const license = document.getElementById('license').value;
+
+        let orderDetails = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
+
+        let total = selectedItems.reduce((sum, item) => {
+            if (noDiscountItems.includes(item.name)) {
+                return sum + (item.price * item.quantity); // No discount for these items
+            } else {
+                return sum + (item.price * item.quantity); // Apply discount if needed
+            }
+        }, 0);
+
+        if (discountApplied) {
+            total = total * 0.9; // Apply discount only to non-excluded items
+        }
+
+        const formattedTotal = `$${Math.round(total).toLocaleString()}`;
+
+        const orderSummary = `\`\`\`
+Customer Name: ${customerName}
+Vehicle | Make/Model: ${vehicle}
+Plate: ${license}
+Upgrades Purchased: ${orderDetails}
+Price Charged: ${formattedTotal}
+SHOP: Al's Garage
+\`\`\``;
+
+        navigator.clipboard.writeText(orderSummary).then(() => {
+            alert('Order copied to clipboard!');
+        });
+    });
+
+    // Update the total price and order details
+    function updateTotal() {
+        let total = selectedItems.reduce((sum, item) => {
+            if (noDiscountItems.includes(item.name)) {
+                return sum + (item.price * item.quantity);
+            } else {
+                return sum + (item.price * item.quantity);
+            }
+        }, 0);
+
+        if (discountApplied) {
+            total = total * 0.9; // Apply 10% discount to the eligible items
+        }
+
+        document.getElementById('total').innerText = `Total: $${Math.round(total).toLocaleString()}`;
+        document.getElementById('orderDetails').innerText = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
+    }
+</script>
+
+</body>
+</html>
 
