@@ -291,9 +291,13 @@
             if (noDiscountItems.includes(item.name)) {
                 return sum + (item.price * item.quantity);
             } else {
-                return sum + ((item.price * item.quantity) * 0.9);
+                return sum + (item.price * item.quantity);
             }
         }, 0);
+
+        // Apply 10% discount
+        total = total * 0.9;
+        
         updateTotal(total);
     });
 
@@ -304,13 +308,16 @@
 
         const orderDetails = selectedItems.map(item => `${item.name} x${item.quantity}`).join(', ');
 
-        const total = selectedItems.reduce((sum, item) => {
+        let total = selectedItems.reduce((sum, item) => {
             if (noDiscountItems.includes(item.name)) {
                 return sum + (item.price * item.quantity);
             } else {
-                return sum + ((item.price * item.quantity) * 0.9);
+                return sum + (item.price * item.quantity);
             }
         }, 0);
+
+        // Apply 10% discount
+        total = total * 0.9;
 
         const orderSummary = `
 \`\`\`
@@ -334,10 +341,14 @@ SHOP: Al's Garage
                 if (noDiscountItems.includes(item.name)) {
                     return sum + (item.price * item.quantity);
                 } else {
-                    return sum + ((item.price * item.quantity) * 0.9);
+                    return sum + (item.price * item.quantity);
                 }
             }, 0);
+
+            // Apply 10% discount
+            total = total * 0.9;
         }
+
         document.getElementById('total').innerText = `Total: $${total}`;
         document.getElementById('orderDetails').innerText = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
     }
