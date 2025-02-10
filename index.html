@@ -260,15 +260,16 @@
         });
     });
 
+    document.getElementById('discountBtn').addEventListener('click', () => {
+        discountApplied = !discountApplied;
+        document.getElementById('discountBtn').textContent = discountApplied ? 'Remove Discount' : 'Apply 10% Discount';
+        updateTotal();
+    });
+
     document.getElementById('clearBtn').addEventListener('click', () => {
         selectedItems = [];
         discountApplied = false;
-        updateTotal();
-        resetForm();
-    });
-
-    document.getElementById('discountBtn').addEventListener('click', () => {
-        discountApplied = !discountApplied;
+        document.getElementById('discountBtn').textContent = 'Apply 10% Discount';
         updateTotal();
     });
 
@@ -288,7 +289,7 @@
         }, 0);
 
         if (discountApplied) {
-            total = total * 0.9;
+            total = total * 0.9; // Apply discount only to non-excluded items
         }
 
         const formattedTotal = `$${Math.round(total).toLocaleString()}`;
@@ -317,17 +318,11 @@ SHOP: Al's Garage
         }, 0);
 
         if (discountApplied) {
-            total = total * 0.9;
+            total = total * 0.9; // Apply 10% discount to the eligible items
         }
 
         document.getElementById('total').innerText = `Total: $${Math.round(total).toLocaleString()}`;
         document.getElementById('orderDetails').innerText = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
-    }
-
-    function resetForm() {
-        document.getElementById('customerName').value = '';
-        document.getElementById('vehicle').value = '';
-        document.getElementById('license').value = '';
     }
 </script>
 </body>
