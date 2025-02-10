@@ -242,6 +242,7 @@
 
     let selectedItems = [];
     let highlightedButtons = [];
+    let discountApplied = false;
 
     document.querySelectorAll('.item-button').forEach(button => {
         button.addEventListener('click', () => {
@@ -272,6 +273,7 @@
         document.getElementById('customerName').value = '';
         document.getElementById('vehicle').value = '';
         document.getElementById('license').value = '';
+        discountApplied = false;
         updateTotal();
     });
 
@@ -287,18 +289,8 @@
     });
 
     document.getElementById('discountBtn').addEventListener('click', () => {
-        let total = selectedItems.reduce((sum, item) => {
-            if (noDiscountItems.includes(item.name)) {
-                return sum + (item.price * item.quantity);
-            } else {
-                return sum + (item.price * item.quantity);
-            }
-        }, 0);
-
-        // Apply 10% discount
-        total = total * 0.9;
-        
-        updateTotal(total);
+        discountApplied = !discountApplied;
+        updateTotal();
     });
 
     document.getElementById('copyBtn').addEventListener('click', () => {
@@ -309,15 +301,12 @@
         const orderDetails = selectedItems.map(item => `${item.name} x${item.quantity}`).join(', ');
 
         let total = selectedItems.reduce((sum, item) => {
-            if (noDiscountItems.includes(item.name)) {
-                return sum + (item.price * item.quantity);
-            } else {
-                return sum + (item.price * item.quantity);
-            }
+            return sum + (item.price * item.quantity);
         }, 0);
 
-        // Apply 10% discount
-        total = total * 0.9;
+        if (discountApplied) {
+            total = total * 0.9; // Apply 10% discount
+        }
 
         const orderSummary = `
 \`\`\`
@@ -325,34 +314,33 @@ Customer Name: ${customerName}
 Vehicle | Make/Model: ${vehicle}
 Plate: ${license}
 Upgrades Purchased: ${orderDetails}
-Price Charged: $${total}
-SHOP: Al's Garage
+Total: $${total.toFixed(2)}
 \`\`\`
-`;
+        `;
 
         navigator.clipboard.writeText(orderSummary).then(() => {
-            alert('Order details copied to clipboard!');
+            alert('Order copied to clipboard!');
         });
     });
 
-    function updateTotal(total = null) {
-        if (!total) {
-            total = selectedItems.reduce((sum, item) => {
-                if (noDiscountItems.includes(item.name)) {
-                    return sum + (item.price * item.quantity);
-                } else {
-                    return sum + (item.price * item.quantity);
-                }
-            }, 0);
+    function updateTotal() {
+        let total = selectedItems.reduce((sum, item) => {
+            if (noDiscountItems.includes(item.name)) {
+                return sum + (item.price * item.quantity);
+            } else {
+                return sum + (item.price * item.quantity);
+            }
+        }, 0);
 
-            // Apply 10% discount
-            total = total * 0.9;
+        if (discountApplied) {
+            total = total * 0.9; // Apply 10% discount if active
         }
 
-        document.getElementById('total').innerText = `Total: $${total}`;
+        document.getElementById('total').innerText = `Total: $${total.toFixed(2)}`;
         document.getElementById('orderDetails').innerText = selectedItems.map(item => `${item.name} x${item.quantity}`).join('\n');
     }
 </script>
 
 </body>
 </html>
+
